@@ -2,7 +2,6 @@ package adeo.leroymerlin.cdp.controller;
 
 import adeo.leroymerlin.cdp.entity.Event;
 import adeo.leroymerlin.cdp.service.EventService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,7 +12,6 @@ public class EventController {
 
     private final EventService eventService;
 
-    @Autowired
     public EventController(EventService eventService) {
         this.eventService = eventService;
     }
