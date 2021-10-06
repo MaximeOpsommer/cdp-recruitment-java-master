@@ -13,10 +13,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -55,5 +57,16 @@ public class EventControllerTest {
 
         Event actual = eventRepository.findOne(eventId);
         assertThat(actual.getNbStars()).isEqualTo(5);
+    }
+
+    @Test
+    public void deleteEvent() throws Exception {
+        Long eventId = 1000L;
+        mvc.perform(delete(("/api/events/" + eventId)))
+                .andExpect(status().isOk());
+
+        List<Event> events = eventRepository.findAll();
+        assertThat(events).hasSize(4);
+        assertThat(events.stream().map(Event::getId).collect(Collectors.toList())).doesNotContain(eventId);
     }
 }

@@ -20,6 +20,7 @@ public class EventService {
         return eventRepository.findAllBy();
     }
 
+    @Transactional
     public void delete(Long id) {
         eventRepository.delete(id);
     }
