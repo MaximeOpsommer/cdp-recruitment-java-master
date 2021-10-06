@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -68,5 +69,13 @@ public class EventControllerTest {
         List<Event> events = eventRepository.findAll();
         assertThat(events).hasSize(4);
         assertThat(events.stream().map(Event::getId).collect(Collectors.toList())).doesNotContain(eventId);
+    }
+
+    @Test
+    public void findEventsWithQuery() throws Exception {
+        mvc.perform(get("/api/events/search/Wa"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", is(1000)));
     }
 }
