@@ -3,6 +3,7 @@ package adeo.leroymerlin.cdp.service;
 import adeo.leroymerlin.cdp.entity.Event;
 import adeo.leroymerlin.cdp.repository.EventRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,6 +22,18 @@ public class EventService {
 
     public void delete(Long id) {
         eventRepository.delete(id);
+    }
+
+    @Transactional
+    public void update(Long id, Event event) {
+        Event existingEvent = eventRepository.findOne(id);
+        if (existingEvent == null) {
+            System.err.println("Event with id " + id + " does not exist");
+        }
+        if (!id.equals(event.getId())) {
+            System.err.println("Given id and event id are not matching");
+        }
+        eventRepository.save(event);
     }
 
     public List<Event> getFilteredEvents(String query) {
