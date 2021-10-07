@@ -42,15 +42,20 @@ public class EventControllerTest {
     public void findEvents() throws Exception {
         mvc.perform(get("/api/events/"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(5)));
+                .andExpect(jsonPath("$", hasSize(4)));
     }
 
     @Test
     public void updateEvent() throws Exception {
         Long eventId = 1000L;
+        Event event = eventRepository.findOne(eventId);
         Event expected = new Event();
         expected.setId(eventId);
         expected.setNbStars(5);
+        expected.setComment(event.getComment());
+        expected.setImgUrl(event.getImgUrl());
+        expected.setTitle(event.getTitle());
+        expected.setBands(event.getBands());
         mvc.perform(put("/api/events/" + eventId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(expected)))
@@ -62,7 +67,7 @@ public class EventControllerTest {
 
     @Test
     public void deleteEvent() throws Exception {
-        Long eventId = 1000L;
+        Long eventId = 1001L;
         mvc.perform(delete(("/api/events/" + eventId)))
                 .andExpect(status().isOk());
 
@@ -73,6 +78,7 @@ public class EventControllerTest {
 
     @Test
     public void findEventsWithQuery() throws Exception {
+        System.out.println(eventRepository.findAll());
         mvc.perform(get("/api/events/search/Wa"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
