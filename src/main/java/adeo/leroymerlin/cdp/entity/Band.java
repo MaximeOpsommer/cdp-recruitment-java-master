@@ -1,5 +1,7 @@
 package adeo.leroymerlin.cdp.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -29,5 +31,10 @@ public class Band {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @JsonProperty("name")
+    public String getFormattedName() {
+        return name + " [" + members.size() + "]";
     }
 }
