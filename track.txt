@@ -1,0 +1,8 @@
+Tracked issues
+
+For the not working delete button, I first tried to reproduce the bug by deleting an event and refreshing the page to see that the event was still there.
+And by navigating in the EventService, I immediately saw that a transactional context was missing, so the solution was to add a @Transactional Srping annotation
+
+For the not working review, I tried to click on a number of stars for an event and refreshed the page.
+The review was not updated.
+Two things were missing : the implementation of the service and doing it in a transactional context
